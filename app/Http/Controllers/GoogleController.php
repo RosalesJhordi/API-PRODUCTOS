@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Socialite;
+use Laravel\Socialite\Facades\Socialite;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -16,20 +17,32 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver('google')->stateless()->user();
+        try {
+            $googleUser = Socialite::driver('google')->user();
 
-        // Busca o crea un usuario
-        $user = User::updateOrCreate(
-            ['email' => $googleUser->getEmail()],
-            [
-                'name' => $googleUser->getName(),
-                'google_id' => $googleUser->getId(),
-                'password' => bcrypt(Str::random(16)) // por si se requiere
-            ]
-        );
+            $user = User::where('email', $googleUser->getEmail())->first();
 
-        Auth::login($user);
+            if (!$user) {
+                // Crear usuario sin contraseña
+                $user = User::create([
+                    'name'      => $googleUser->getName(),
+                    'email'     => $googleUser->getEmail(),
+                    'google_id' => $googleUser->getId(),
+                    'avatar'    => $googleUser->getAvatar(),
+                ]);
+            } else {
+                // Actualizar datos
+                $user->update([
+                    'google_id' => $googleUser->getId(),
+                    'avatar'    => $googleUser->getAvatar(),
+                ]);
+            }
 
-        return redirect('/home');
+            Auth::login($user);
+
+            return redirect('/');
+        } catch (\Exception $e) {
+            return redirect('/login')->with('error', 'Algo salió mal con Google Login');
+        }
     }
 }
