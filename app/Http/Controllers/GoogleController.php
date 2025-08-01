@@ -28,8 +28,11 @@ class GoogleController extends Controller
                     'name'      => $googleUser->getName(),
                     'email'     => $googleUser->getEmail(),
                     'google_id' => $googleUser->getId(),
+                    'proveedor' => "Google",
                     'avatar'    => $googleUser->getAvatar(),
                 ]);
+
+                return redirect('/');
             } else {
                 // Actualizar datos
                 $user->update([

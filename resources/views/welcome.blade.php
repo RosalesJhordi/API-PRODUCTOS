@@ -11,10 +11,36 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
     @vite('resources/css/app.css')
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .blob {
+            aspect-ratio: 1;
+            background: red;
+            clip-path: shape(from 21.33% 65.62%, curve to 11.91% 48.60% with 15.53% 58.85%, curve to 12.93% 27.62% with 8.28% 38.35%, curve to 30.02% 18.76% with 17.57% 16.89%, curve to 51.17% 17.62% with 42.46% 20.63%, curve to 70.28% 17.28% with 59.88% 14.60%, curve to 89.00% 28.91% with 80.67% 19.96%, curve to 88.13% 47.96% with 97.33% 37.85%, curve to 81.70% 71.63% with 78.94% 58.08%, curve to 72.20% 86.96% with 84.46% 85.19%, curve to 51.25% 82.70% with 59.95% 88.73%, curve to 34.85% 74.53% with 42.56% 76.66%, curve to 21.33% 65.62% with 27.13% 72.39%);
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+
+    <script>
+        hljs.highlightAll();
+    </script>
+    {{-- <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"> --}}
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
 </head>
 
 <body>
-    <header class="flex justify-between items-center px-10">
+
+    {{-- <header class="flex justify-between items-center px-10">
         <img src="{{ asset('img/logo.png') }}" alt="Logo RJ ENTERPRISES" class="w-24">
         <nav>
             <a href="">
@@ -52,7 +78,7 @@
                 </svg>
             </label>
         </div>
-    </header>
+    </header> --}}
     {{-- <div class="flex items-center justify-center min-h-screen bg-gray-100">
         <a href="{{ url('auth/google') }}"
             class="flex items-center bg-white border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
@@ -82,7 +108,296 @@
             </svg>
             <span>Continuar con Google</span>
         </a>
+        <a href="{{ url('auth/github') }}">
+        <button class="bg-gray-800 text-white px-4 py-2 rounded">
+            Login con GitHub
+        </button>
+    </a>
     </div> --}}
+    <div class="">
+        <header id="inicio" class="absolute inset-x-0 top-0 z-50">
+            <nav aria-label="Global" class="flex items-center justify-between p-6 lg:px-8">
+                <div class="flex lg:flex-1">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">RJ ENTERPRISES</span>
+                        <img src="{{ asset('img/logo.png') }}" alt="" class="h-20 w-auto"
+                            style="filter: drop-shadow(1px 1px 20px rgba(0, 94, 255, 0.461))" />
+                    </a>
+                </div>
+                <div class="flex lg:hidden">
+                    <button type="button"
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Open main menu</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                            data-slot="icon" aria-hidden="true" class="size-6">
+                            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="hidden lg:flex lg:gap-x-12">
+                    <a href="#inicio" class="text-sm/6 font-semibold text-gray-900 active:border-b-2">Incio</a>
+                    <a href="#como" class="text-sm/6 font-semibold text-gray-900">Como empezar ?</a>
+                    <a href="#" class="text-sm/6 font-semibold text-gray-900">Documentación</a>
+                </div>
+                <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                    <a href="#" class="text-sm/6 font-semibold text-gray-900">Acceder<span
+                            aria-hidden="true">&rarr;</span></a>
+                </div>
+            </nav>
+            <!-- Mobile menu, show/hide based on menu open state. -->
+            <div role="dialog" aria-modal="true" class="lg:hidden">
+                <!-- Background backdrop, show/hide based on slide-over state. -->
+                <div class="fixed inset-0 z-50"></div>
+                <div
+                    class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                    <div class="flex items-center justify-between">
+                        <a href="#" class="-m-1.5 p-1.5">
+                            <span class="sr-only">Your Company</span>
+                            <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                                alt="" class="h-8 w-auto" />
+                        </a>
+                        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                            <span class="sr-only">Close menu</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                data-slot="icon" aria-hidden="true" class="size-6">
+                                <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-6 flow-root">
+                        <div class="-my-6 divide-y divide-gray-500/10">
+                            <div class="space-y-2 py-6">
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Product</a>
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Features</a>
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Marketplace</a>
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Company</a>
+                            </div>
+                            <div class="py-6">
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log
+                                    in</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="relative isolate px-6 pt-14 lg:px-8">
+            <div aria-hidden="true"
+                class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+                <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+                    class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75">
+                </div>
+            </div>
+            <div class="mx-auto  py-32 sm:py-48 lg:py-32">
+                <div class="flex justify-around items-center py-0 px-40 mt-0">
+                    <div class="text-center">
+                        <h1 class="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">Acceso
+                            a
+                            más de 100 millones de datos reales</h1>
+                        <p class="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">Explora información
+                            detallada sobre millones de productos en segundos</p>
+                        <div class="mt-10 flex items-center justify-center gap-x-6">
+                            <a href="#"
+                                class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                Iniciar Ahora</a>
+                            <a href="#" class="text-sm/6 font-semibold text-gray-900">Probar <span
+                                    aria-hidden="true">→</span></a>
+                        </div>
+                    </div>
+                    {{-- <img src="{{ asset('img/971.jpg') }}" class="blob h-[70vh]"> --}}
+                </div>
+
+                {{-- <svg id="barcode"></svg>
+                <script>
+                    // Generar código de barras para Coca Cola
+                    JsBarcode("#barcode", "0070847010500", {
+                        format: "EAN13",
+                        lineColor: "#000",
+                        width: 2,
+                        height: 100,
+                        displayValue: true
+                    });
+                </script> --}}
+                <div class="w-full px-36 mt-20">
+                    <!-- Descripción -->
+                        <p class="text-gray-800 text-base leading-relaxed mb-4">
+                            Para acceder a este endpoint es necesario incluir tu
+                            <span class="font-semibold text-blue-600">API Key</span> en los encabezados de la petición
+                            utilizando <span class="italic">Bearer Token</span>.
+                        </p>
+
+                        <div class="bg-gray-100 border-l-4 border-blue-500 text-gray-700 p-3 mb-5 rounded">
+                            <p class="text-sm">
+                                <span class="font-semibold">Ejemplo de encabezado:</span>
+                            </p>
+                            <pre class="bg-gray-800 text-gray-100 text-sm p-3 rounded mt-2 overflow-auto">
+Authorization: Bearer TU_API_KEY_AQUI
+        </pre>
+                        </div>
+                </div>
+                <div class="w-full px-36 mt-20 flex justify-center items-start gap-4">
+                    <div class="bg-gray-50 p-6 w-full rounded-xl shadow-md border border-gray-200">
+                        <!-- Título -->
+                        <h1 class="text-3xl text-center font-extrabold text-gray-700 mb-6">
+                            Listar todos los productos
+                        </h1>
+
+                        <p class="text-gray-800 text-base leading-relaxed mb-5">
+                            Una vez autenticado correctamente, puedes usar el siguiente vínculo para obtener el listado
+                            completo de productos registrados en la API. Este endpoint devuelve datos como
+                            <span class="italic">nombre, marca, código de barras</span> y cualquier otra información
+                            relevante.
+                        </p>
+
+                        <!-- Caja de URL con botón copiar -->
+                        <div class="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm p-2 mb-5">
+                            <input id="urlText"
+                                class="border-none w-full bg-transparent text-gray-700 text-sm md:text-base px-2 focus:outline-none"
+                                type="text" value="https://api.rjenterprises.com/api/productos_all" readonly>
+                            <button id="copyBtn"
+                                class="ml-2 bg-blue-500 text-white text-sm px-4 py-1.5 rounded-md hover:bg-blue-600 transition">
+                                Copiar
+                            </button>
+                        </div>
+
+                        <!-- Texto previo al resultado -->
+                        <p class="text-gray-700 text-base mb-2">
+                            Si la petición se realiza con éxito, la API devolverá una respuesta en formato JSON como la
+                            siguiente:
+                        </p>
+
+                        <!-- Ejemplo de respuesta -->
+                        <div class="text-sm rounded-lg p-4 overflow-auto">
+                            <pre>
+                                <code class="language-json font-light" id="como">
+// Respuesta de la API
+{
+    "mensaje": "lista de productos",
+    "productos": [
+        {
+        "id": 1,
+        "nombre": "Energizante MONSTER Energy",
+        "marca": "MONSTER",
+        "codigo_barras": "0070847010500",
+        "detalles": "LATA DE 473ML",
+        "imagen": "1020_999999-7084781119.webp",
+        "created_at": "2025-07-29T20:53:34.000000Z",
+        "updated_at": "2025-07-29T20:53:34.000000Z"
+        }
+    ]
+}                              </code>
+                            </pre>
+                        </div>
+
+                        <!-- Script para copiar -->
+                        <script>
+                            const copyBtn = document.getElementById("copyBtn");
+                            const urlText = document.getElementById("urlText");
+
+                            copyBtn.addEventListener("click", () => {
+                                navigator.clipboard.writeText(urlText.value).then(() => {
+                                    copyBtn.textContent = "¡Copiado!";
+                                    copyBtn.classList.replace("bg-blue-500", "bg-green-500");
+                                    setTimeout(() => {
+                                        copyBtn.textContent = "Copiar";
+                                        copyBtn.classList.replace("bg-green-500", "bg-blue-500");
+                                    }, 2000);
+                                });
+                            });
+                        </script>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 w-full rounded-xl shadow-md border border-gray-200">
+                        <!-- Título -->
+                        <h1 class="text-3xl text-center font-extrabold text-gray-700 mb-6">
+                            Listar un producto
+                        </h1>
+
+                        <p class="text-gray-800 text-base leading-relaxed mb-5">
+                            Una vez autenticado correctamente, puedes usar el siguiente vínculo para obtener el listado
+                            completo de productos registrados en la API. Este endpoint devuelve datos como
+                            <span class="italic">nombre, marca, código de barras</span> y cualquier otra información
+                            relevante.
+                        </p>
+
+                        <!-- Caja de URL con botón copiar -->
+                        <div class="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm p-2 mb-5">
+                            <input id="urlText"
+                                class="border-none w-full bg-transparent text-gray-700 text-sm md:text-base px-2 focus:outline-none"
+                                type="text" value="https://api.rjenterprises.com/api/productos_all" readonly>
+                            <button id="copyBtn"
+                                class="ml-2 bg-blue-500 text-white text-sm px-4 py-1.5 rounded-md hover:bg-blue-600 transition">
+                                Copiar
+                            </button>
+                        </div>
+
+                        <!-- Texto previo al resultado -->
+                        <p class="text-gray-700 text-base mb-2">
+                            Si la petición se realiza con éxito, la API devolverá una respuesta en formato JSON como la
+                            siguiente:
+                        </p>
+
+                        <!-- Ejemplo de respuesta -->
+                        <div class="text-sm rounded-lg p-4 overflow-auto">
+                            <pre>
+                                <code class="language-json font-light" id="como">
+// Respuesta de la API
+{
+    "estado": "exito",
+    "datos": [
+        {
+            "codigo": "1234567890123",
+            "nombre": "Coca Cola 1L",
+            "marca": "Coca Cola",
+            "imagen": "imgen.jpg"
+        },
+        {
+            "codigo": "9876543210987",
+            "nombre": "Inca Kola 500ml",
+            "marca": "Inca Kola",
+            "imagen": "imgen.jpg"
+        }
+    ]
+}
+                                </code>
+                            </pre>
+                        </div>
+
+                        <!-- Script para copiar -->
+                        <script>
+                            const copyBtn = document.getElementById("copyBtn");
+                            const urlText = document.getElementById("urlText");
+
+                            copyBtn.addEventListener("click", () => {
+                                navigator.clipboard.writeText(urlText.value).then(() => {
+                                    copyBtn.textContent = "¡Copiado!";
+                                    copyBtn.classList.replace("bg-blue-500", "bg-green-500");
+                                    setTimeout(() => {
+                                        copyBtn.textContent = "Copiar";
+                                        copyBtn.classList.replace("bg-green-500", "bg-blue-500");
+                                    }, 2000);
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+            <div aria-hidden="true"
+                class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
+                <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+                    class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75">
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
